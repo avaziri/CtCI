@@ -14,10 +14,11 @@
 
 #include <exception>
 #include <iostream>
+#include <iterator>
 #include <list>
 #include <string>
 #include <sstream>
-#include <unordered_map>
+#include <unordered_set>
 #include "../include/2.1.h"
 
 namespace CtCI {
@@ -69,19 +70,43 @@ std::list<int> RemoveDups1(std::list<int> L) {
 // N = # of elements in the list. The list itself takes N elements worth of
 // space the hash table takes O(N) space. In total still O(N) space complexity.
 std::list<int> RemoveDups2(std::list<int> L) {
-  std::unordered_map<int, bool> hash_table;
+  std::unordered_set<int> hash_set;
   int seen;
   for (std::list<int>::iterator it = L.begin(); it != L.end(); ++it) {
-    try {
-      seen = hash_table.at(*it);  // throws if key is not mapped to a value
-    } catch (std::out_of_range ex) {
-      seen = 0;
-      hash_table.insert({*it, 1});
-    }
-    if (seen == 1) {
+      seen = hash_set.count(*it);
+    if (seen == 0) {
+      hash_set.insert(*it);
+    } else {
       it = L.erase(it);
       // it--;  // I thought this line should be necessary, but all the tests
                // pass with or without it....???
+    }
+  }
+  return L;
+}
+
+// |||Implementation 3|||
+// This solution addresses the follow up question of how to do this in place.
+// There are two nested loops. The first loop iterates through each element in
+// the list. During each iteration the second loop removes all duplicate values
+// from the rest of the list.
+// |||Time Complexity|||
+// N = # of elements in the list. All cases take an equal amount of time. The
+// outer loop completes N interations each of which requires a decreasing
+// number of elements to be accesed in the inner loop (N-1, ... 1, 0). This
+// represents N/2 on average. The overall complexity is O(N^2)
+// |||Space Complexity|||
+// N = # of elements in the list. The list itself takes N elements worth of
+// space so the space complexity is O(N).
+std::list<int> RemoveDups3(std::list<int> L) {
+  for (std::list<int>::iterator it_o = L.begin(); it_o != L.end(); ++it_o) {
+    std::list<int>::iterator it_i;
+    for (it_i = std::next(it_o, 1); it_i != L.end(); /*no increment*/) {
+      if (*it_o == *it_i) {
+        it_i = L.erase(it_i);
+      } else {
+        ++it_i;
+      }
     }
   }
   return L;

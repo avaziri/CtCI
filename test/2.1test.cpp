@@ -94,9 +94,39 @@ TEST_F(_2_1_test, 2handlesRepeatedDuplicates) {
   EXPECT_EQ(CtCI::ListToString(input), "[2]");
 }
 
-
 TEST_F(_2_1_test, 2handlesEmptyList) {
-  input = CtCI::RemoveDups2(input);
+  input = CtCI::RemoveDups3(input);
+  EXPECT_EQ(CtCI::ListToString(input), "[]");
+}
+
+TEST_F(_2_1_test, 3handlesNoDuplicates) {
+  input.push_front(1);
+  input.push_front(2);
+  input.push_front(3);
+  input = CtCI::RemoveDups3(input);
+  EXPECT_EQ(CtCI::ListToString(input), "[3, 2, 1]");
+}
+
+TEST_F(_2_1_test, 3handlesDuplicates) {
+  input.push_front(1);
+  input.push_front(2);
+  input.push_front(3);
+  input.push_front(2);
+  input = CtCI::RemoveDups3(input);
+  EXPECT_EQ(CtCI::ListToString(input), "[2, 3, 1]");
+}
+
+TEST_F(_2_1_test, 3handlesRepeatedDuplicates) {
+  input.push_front(2);
+  input.push_front(2);
+  input.push_front(2);
+  input.push_front(2);
+  input = CtCI::RemoveDups3(input);
+  EXPECT_EQ(CtCI::ListToString(input), "[2]");
+}
+
+TEST_F(_2_1_test, 3handlesEmptyList) {
+  input = CtCI::RemoveDups3(input);
   EXPECT_EQ(CtCI::ListToString(input), "[]");
 }
 
