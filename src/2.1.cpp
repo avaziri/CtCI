@@ -16,8 +16,6 @@
 #include <iostream>
 #include <iterator>
 #include <list>
-#include <string>
-#include <sstream>
 #include <unordered_set>
 #include "../include/2.1.h"
 
@@ -59,27 +57,25 @@ std::list<int> RemoveDups1(std::list<int> L) {
 }
 
 // |||Implementation 2|||
-// Iterate through the list. Check the hash table to see if that value has been
+// Iterate through the list. Check the hash set to see if that value has been
 // seen before. If it has then erase the corresponding node. If it has not been
-// update the hash table and continue to the next element of the list.
+// update the hash set and continue to the next element of the list.
 // |||Time Complexity|||
 // N = # of elements in the list. The algorithm must iterate over N elements,
-// but checking and updating the hash table is constant time. So the algorithm
+// but checking and updating the hash set is constant time. So the algorithm
 // will be O(N).
 // |||Space Complexity|||
 // N = # of elements in the list. The list itself takes N elements worth of
-// space the hash table takes O(N) space. In total still O(N) space complexity.
+// space the hash set takes O(N) space. In total still O(N) space complexity.
 std::list<int> RemoveDups2(std::list<int> L) {
   std::unordered_set<int> hash_set;
-  int seen;
-  for (std::list<int>::iterator it = L.begin(); it != L.end(); ++it) {
-      seen = hash_set.count(*it);
+  for (std::list<int>::iterator it = L.begin(); it != L.end(); /*no ++it*/) {
+    int seen = hash_set.count(*it);
     if (seen == 0) {
       hash_set.insert(*it);
+      ++it;
     } else {
       it = L.erase(it);
-      // it--;  // I thought this line should be necessary, but all the tests
-               // pass with or without it....???
     }
   }
   return L;
@@ -110,21 +106,6 @@ std::list<int> RemoveDups3(std::list<int> L) {
     }
   }
   return L;
-}
-
-// Helper Function
-std::string ListToString(std::list<int> L) {
-  std::stringstream ss;
-  ss << "[";
-  for (std::list<int>::const_iterator it = L.begin(); it != L.end(); ++it) {
-    if (it == L.begin()) {
-      ss << *it;
-    } else {
-      ss << ", " << *it;
-    }
-  }
-  ss << "]";
-  return ss.str();
 }
 
 }  // namespace CtCI

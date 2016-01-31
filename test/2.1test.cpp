@@ -1,14 +1,30 @@
 // Copyright Andrew Vaziri 2016
 #include <iostream>
 #include <list>
+#include <sstream>
+#include <string>
 
 #include "../include/2.1.h"
 #include "gtest/gtest.h"
 
+// Helper Function
+std::string ListToString(std::list<int> L) {
+  std::stringstream ss;
+  ss << "[";
+  for (std::list<int>::const_iterator it = L.begin(); it != L.end(); ++it) {
+    if (it == L.begin()) {
+      ss << *it;
+    } else {
+      ss << ", " << *it;
+    }
+  }
+  ss << "]";
+  return ss.str();
+}
+
 // The fixture for testing class Foo.
 class _2_1_test : public ::testing::Test {
  protected:
-  std::list<int> input;
   // You can remove any or all of the following functions if its body
   // is empty.
 
@@ -37,97 +53,75 @@ class _2_1_test : public ::testing::Test {
 };
 
 TEST_F(_2_1_test, 1handlesNoDuplicates) {
-  input.push_front(1);
-  input.push_front(2);
-  input.push_front(3);
+  std::list<int> input{3, 2, 1};
   input = CtCI::RemoveDups1(input);
-  EXPECT_EQ(CtCI::ListToString(input), "[1, 2, 3]");
+  EXPECT_EQ(ListToString(input), "[1, 2, 3]");
 }
 
 TEST_F(_2_1_test, 1handlesDuplicates) {
-  input.push_front(1);
-  input.push_front(2);
-  input.push_front(3);
-  input.push_front(2);
+  std::list<int> input{2, 3, 2, 1};
   input = CtCI::RemoveDups1(input);
-  EXPECT_EQ(CtCI::ListToString(input), "[1, 3, 2]");
+  EXPECT_EQ(ListToString(input), "[1, 3, 2]");
 }
 
 TEST_F(_2_1_test, 1handlesRepeatedDuplicates) {
-  input.push_front(2);
-  input.push_front(2);
-  input.push_front(2);
-  input.push_front(2);
+  std::list<int> input{2, 2, 2, 2, 2, 2, 2, 2, 2};
   input = CtCI::RemoveDups1(input);
-  EXPECT_EQ(CtCI::ListToString(input), "[2]");
+  EXPECT_EQ(ListToString(input), "[2]");
 }
 
-
 TEST_F(_2_1_test, 1handlesEmptyList) {
+  std::list<int> input;
   input = CtCI::RemoveDups1(input);
-  EXPECT_EQ(CtCI::ListToString(input), "[]");
+  EXPECT_EQ(ListToString(input), "[]");
 }
 
 TEST_F(_2_1_test, 2handlesNoDuplicates) {
-  input.push_front(1);
-  input.push_front(2);
-  input.push_front(3);
+  std::list<int> input{3, 2, 1};
   input = CtCI::RemoveDups2(input);
-  EXPECT_EQ(CtCI::ListToString(input), "[3, 2, 1]");
+  EXPECT_EQ(ListToString(input), "[3, 2, 1]");
 }
 
 TEST_F(_2_1_test, 2handlesDuplicates) {
-  input.push_front(1);
-  input.push_front(2);
-  input.push_front(3);
-  input.push_front(2);
+  std::list<int> input{2, 3, 2, 1};
   input = CtCI::RemoveDups2(input);
-  EXPECT_EQ(CtCI::ListToString(input), "[2, 3, 1]");
+  EXPECT_EQ(ListToString(input), "[2, 3, 1]");
 }
 
 TEST_F(_2_1_test, 2handlesRepeatedDuplicates) {
-  input.push_front(2);
-  input.push_front(2);
-  input.push_front(2);
-  input.push_front(2);
+  std::list<int> input{2, 2, 2, 2, 2, 2, 2, 2, 2};
   input = CtCI::RemoveDups2(input);
-  EXPECT_EQ(CtCI::ListToString(input), "[2]");
+  EXPECT_EQ(ListToString(input), "[2]");
 }
 
 TEST_F(_2_1_test, 2handlesEmptyList) {
+  std::list<int> input;
   input = CtCI::RemoveDups3(input);
-  EXPECT_EQ(CtCI::ListToString(input), "[]");
+  EXPECT_EQ(ListToString(input), "[]");
 }
 
 TEST_F(_2_1_test, 3handlesNoDuplicates) {
-  input.push_front(1);
-  input.push_front(2);
-  input.push_front(3);
+  std::list<int> input{3, 2, 1};
   input = CtCI::RemoveDups3(input);
-  EXPECT_EQ(CtCI::ListToString(input), "[3, 2, 1]");
+  EXPECT_EQ(ListToString(input), "[3, 2, 1]");
 }
 
 TEST_F(_2_1_test, 3handlesDuplicates) {
-  input.push_front(1);
-  input.push_front(2);
-  input.push_front(3);
-  input.push_front(2);
+  std::list<int> input{2, 3, 2, 1};
   input = CtCI::RemoveDups3(input);
-  EXPECT_EQ(CtCI::ListToString(input), "[2, 3, 1]");
+  EXPECT_EQ(ListToString(input), "[2, 3, 1]");
 }
 
 TEST_F(_2_1_test, 3handlesRepeatedDuplicates) {
-  input.push_front(2);
-  input.push_front(2);
-  input.push_front(2);
-  input.push_front(2);
+  std::list<int> input{2, 2, 2, 2, 2, 2, 2, 2, 2};
   input = CtCI::RemoveDups3(input);
-  EXPECT_EQ(CtCI::ListToString(input), "[2]");
+  EXPECT_EQ(ListToString(input), "[2]");
 }
 
 TEST_F(_2_1_test, 3handlesEmptyList) {
+  std::list<int> input;
   input = CtCI::RemoveDups3(input);
-  EXPECT_EQ(CtCI::ListToString(input), "[]");
+  EXPECT_EQ(ListToString(input), "[]");
 }
 
 int main(int argc, char **argv) {
