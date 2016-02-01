@@ -1,14 +1,14 @@
 // Copyright 2016 Andrew Vaziri
 // CtCI Question #
 // |||Prompt|||
-// Implment an alogirthm  to find the kith to last element of a singly linekd
+// Implement an algorithm  to find the kith to last element of a singly linked
 // list.
 // |||Questions I might ask|||
-// --How am I givent he linked list? What exactly should I return?
+// --How am I given the linked list? What exactly should I return?
 // --When we say Kth from last, is that zero based or one based?
 // --What should I do if there are less than K-1 elements in the list? What
 // should I do if someone gives me a negative value for K?
-// --Can I assume the list holds ints for simplicty sake?
+// --Can I assume the list holds ints for simplicity sake?
 
 // |||Possible Implementations|||
 
@@ -22,7 +22,7 @@ namespace CtCI {
 // |||Implementation 1|||
 // Iterate through the list once to count the number of elements. Use the
 // result to calculate which element to return. Assuming zero indexed. That
-// would be the (N-k-1)th element after the begining.
+// would be the (N-k-1)th element after the beginning.
 // |||Time Complexity|||
 // N = the number of elements in the list. At worst you iterate through the
 // list twice, that is O(N)
@@ -39,14 +39,14 @@ std::forward_list<int>::const_iterator KthToLast1(std::forward_list<int> L,
   if (k < 0) {
     return std::next(L.begin(), (N-1));
   }
-  if ((k-1) > N) return L.begin();  // If k is too large return begining of list
+  if ((k-1) > N) return L.begin();  // If k is too large return beginning of list
   return std::next(L.begin(), (N-k-1));
 }
 
 // |||Implementation 1|||
-// Call a function recursively until it reaches the final elemnent. From that
-// point incrment the value the is passed up. When the count has reached the
-// Kth from the end return an iterator to that 
+// Call a function recursively until it reaches the final element. From that
+// point increment the value the is passed up. When the count has reached the
+// Kth from the end return an iterator to that
 // |||Time Complexity|||
 // N = the number of elements in the list. The worst case is that it has to go
 // all the way down through the nodes then back up the stack. This is O(N) +
@@ -56,7 +56,7 @@ std::forward_list<int>::const_iterator KthToLast1(std::forward_list<int> L,
 std::forward_list<int>::const_iterator KthToLast2(std::forward_list<int> L,
                                                  int k) {
   int* counter = new int(0);
-  std::forward_list<int>::const_iterator it = RecursiveHelper2(
+  const auto it = RecursiveHelper2(
     L,
     L.cbegin(),
     counter,
@@ -71,7 +71,7 @@ std::forward_list<int>::const_iterator RecursiveHelper2(
   int* counter,
   int k) {
   if (std::next(it) != L.cend()) {
-    std::forward_list<int>::const_iterator it_out = RecursiveHelper2(
+    const auto it_out = RecursiveHelper2(
       L,
       std::next(it),
       counter,
