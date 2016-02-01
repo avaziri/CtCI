@@ -8,7 +8,6 @@
 // The fixture for testing class Foo.
 class _2_2_test : public ::testing::Test {
  protected:
-  std::forward_list<int> input;
   // You can remove any or all of the following functions if its body
   // is empty.
 
@@ -36,43 +35,63 @@ class _2_2_test : public ::testing::Test {
   // Objects declared here can be used by all tests in the test case for Foo.
 };
 
-TEST_F(_2_2_test, handlesZeroInput) {
-  input.push_front(3);
-  input.push_front(2);
-  input.push_front(1);
-  std::forward_list<int>::const_iterator it = CtCI::KthToLast(input, 0);
+TEST_F(_2_2_test, 1handlesZeroInput) {
+  std::forward_list<int> input{1, 2, 3};
+  std::forward_list<int>::const_iterator it = CtCI::KthToLast1(input, 0);
   EXPECT_EQ(*it, 3);
 }
 
-TEST_F(_2_2_test, handlesNegativeInput) {
-  input.push_front(3);
-  input.push_front(2);
-  input.push_front(1);
-  std::forward_list<int>::const_iterator it = CtCI::KthToLast(input, -10);
+TEST_F(_2_2_test, 1handlesNegativeInput) {
+  std::forward_list<int> input{1, 2, 3};
+  std::forward_list<int>::const_iterator it = CtCI::KthToLast1(input, -10);
   EXPECT_EQ(*it, 3);
 }
 
-TEST_F(_2_2_test, handlesBeyondRangeInput) {
-  input.push_front(3);
-  input.push_front(2);
-  input.push_front(1);
-  std::forward_list<int>::const_iterator it = CtCI::KthToLast(input, 10);
+TEST_F(_2_2_test, 1handlesBeyondRangeInput) {
+  std::forward_list<int> input{1, 2, 3};
+  std::forward_list<int>::const_iterator it = CtCI::KthToLast1(input, 10);
   EXPECT_EQ(*it, 1);
 }
 
-TEST_F(_2_2_test, handlesNonEndOrBeginInput) {
-  input.push_front(3);
-  input.push_front(2);
-  input.push_front(1);
-  std::forward_list<int>::const_iterator it = CtCI::KthToLast(input, 1);
+TEST_F(_2_2_test, 1handlesNonEndOrBeginInput) {
+  std::forward_list<int> input{1, 2, 3};
+  std::forward_list<int>::const_iterator it = CtCI::KthToLast1(input, 1);
   EXPECT_EQ(*it, 2);
 }
 
-TEST_F(_2_2_test, handlesBeginInput) {
-  input.push_front(3);
-  input.push_front(2);
-  input.push_front(1);
-  std::forward_list<int>::const_iterator it = CtCI::KthToLast(input, 2);
+TEST_F(_2_2_test, 1handlesBeginInput) {
+  std::forward_list<int> input{1, 2, 3};
+  std::forward_list<int>::const_iterator it = CtCI::KthToLast1(input, 2);
+  EXPECT_EQ(*it, 1);
+}
+
+TEST_F(_2_2_test, 2handlesZeroInput) {
+  std::forward_list<int> input{1, 2, 3};
+  std::forward_list<int>::const_iterator it = CtCI::KthToLast2(input, 0);
+  EXPECT_EQ(*it, 3);
+}
+
+TEST_F(_2_2_test, 2handlesNegativeInput) {
+  std::forward_list<int> input{1, 2, 3};
+  std::forward_list<int>::const_iterator it = CtCI::KthToLast2(input, -10);
+  EXPECT_EQ(*it, 3);
+}
+
+TEST_F(_2_2_test, 2handlesBeyondRangeInput) {
+  std::forward_list<int> input{1, 2, 3};
+  std::forward_list<int>::const_iterator it = CtCI::KthToLast2(input, 10);
+  EXPECT_EQ(*it, 1);
+}
+
+TEST_F(_2_2_test, 2handlesNonEndOrBeginInput) {
+  std::forward_list<int> input{1, 2, 3};
+  std::forward_list<int>::const_iterator it = CtCI::KthToLast2(input, 1);
+  EXPECT_EQ(*it, 2);
+}
+
+TEST_F(_2_2_test, 2handlesBeginInput) {
+  std::forward_list<int> input{1, 2, 3};
+  std::forward_list<int>::const_iterator it = CtCI::KthToLast2(input, 2);
   EXPECT_EQ(*it, 1);
 }
 

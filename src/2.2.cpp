@@ -28,7 +28,7 @@ namespace CtCI {
 // list twice, that is O(N)
 // |||Space Complexity|||
 // You only make one new thing; the output of the function. O(1)
-std::forward_list<int>::const_iterator KthToLast(std::forward_list<int> L,
+std::forward_list<int>::const_iterator KthToLast1(std::forward_list<int> L,
                                                  int k) {
   int N = 0;
   for (std::forward_list<int>::const_iterator it = L.begin();
@@ -43,4 +43,58 @@ std::forward_list<int>::const_iterator KthToLast(std::forward_list<int> L,
   return std::next(L.begin(), (N-k-1));
 }
 
+// |||Implementation 1|||
+// Call a function recursively until it reaches the final elemnent. From that
+// point incrment the value the is passed up. When the count has reached the
+// Kth from the end return an iterator to that 
+// |||Time Complexity|||
+// N = the number of elements in the list. The worst case is that it has to go
+// all the way down through the nodes then back up the stack. This is O(N) +
+// O(N) = O(N)
+// |||Space Complexity|||
+// This method makes O(N) frames on the stack.
+std::forward_list<int>::const_iterator KthToLast2(std::forward_list<int> L,
+                                                 int k) {
+  int* counter = new int(0);
+  std::forward_list<int>::const_iterator it = RecursiveHelper2(
+    L,
+    L.cbegin(),
+    counter,
+    k);
+  delete counter;
+  return it;
+}
+
+std::forward_list<int>::const_iterator RecursiveHelper2(
+  const std::forward_list<int>& L,
+  std::forward_list<int>::const_iterator it,
+  int* counter,
+  int k) {
+  if (std::next(it) != L.cend()) {
+    std::forward_list<int>::const_iterator it_out = RecursiveHelper2(
+      L,
+      std::next(it),
+      counter,
+      k);
+    // The default case is to return the last element, I decided that if K is
+    // too large then the first node should be returned which necessitates
+    // the following check
+    if (it == L.cbegin() && k > *counter) {
+      return it;
+    }
+    // If the current node is Kth from the end start passing that up the stack
+    if (*counter == k) {
+      (*counter)++;
+      return it;
+    // Otherwise pass the previous result up the stack
+    } else {
+      (*counter)++;
+      return it_out;
+    }
+    // If this is the last element pass it up the stack
+  } else {
+    (*counter)++;
+    return it;
+  }
+}
 }  // namespace CtCI
