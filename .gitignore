@@ -1,2 +1,9 @@
+#Executables
 *.o
 *.out
+
+#cmake and make files
+CMakeCache.txt
+*.cmake
+CMakeFiles
+Makefile
