@@ -28,3 +28,7 @@ add_executable(2.4test 2.4test.cpp)
 target_link_libraries(2.4test gtest gtest_main)
 target_link_libraries(2.4test 2.4lib)
 
+add_executable(3.2test 3.2test.cpp)
+target_link_libraries(3.2test gtest gtest_main)
+target_link_libraries(3.2test 3.2lib)
+

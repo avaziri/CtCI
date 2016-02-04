@@ -7,3 +7,6 @@ CMakeCache.txt
 *.cmake
 CMakeFiles
 Makefile
+
+#object
+.a
