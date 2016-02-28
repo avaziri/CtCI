@@ -14,6 +14,12 @@
 #endforeach( test_source_name ${TEST_SOURCES} )
 
 
+add_executable(1.1test 1.1test.cpp)
+# Linking for gtest stuff
+target_link_libraries(1.1test gtest gtest_main)
+# Linking for the project
+target_link_libraries(1.1test 1.1lib)
+
 add_executable(2.1test 2.1test.cpp)
 # Linking for gtest stuff
 target_link_libraries(2.1test gtest gtest_main)
