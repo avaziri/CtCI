@@ -23,7 +23,7 @@ add_subdirectory(src)
 
 #Testing
 if(test_enable)
+  # Locate Gtest
   add_subdirectory(test)
-  add_subdirectory(/home/andrew/googletest src/gtest) 
   enable_testing()
 endif()

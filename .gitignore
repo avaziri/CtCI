@@ -12,3 +12,6 @@ Makefile
 .a
 /bin
 /lib
+
+#temporary files
+*.swp
