@@ -14,23 +14,28 @@
 #endforeach( test_source_name ${TEST_SOURCES} )
 
 
+find_package(GTest REQUIRED)
+
 add_executable(1.1test 1.1test.cpp)
 # Linking for gtest stuff
-target_link_libraries(1.1test gtest gtest_main)
+target_link_libraries(1.1test ${GTEST_LIBRARIES})
 # Linking for the project
 target_link_libraries(1.1test 1.1lib)
 
 add_executable(2.1test 2.1test.cpp)
 # Linking for gtest stuff
-target_link_libraries(2.1test gtest gtest_main)
+target_link_libraries(2.1test ${GTEST_LIBRARIES})
 # Linking for the project
 target_link_libraries(2.1test 2.1lib)
 
 add_executable(2.2test 2.2test.cpp)
-target_link_libraries(2.2test gtest gtest_main)
+target_link_libraries(2.2test ${GTEST_LIBRARIES})
 target_link_libraries(2.2test 2.2lib)
 
 add_executable(2.4test 2.4test.cpp)
-target_link_libraries(2.4test gtest gtest_main)
+target_link_libraries(2.4test ${GTEST_LIBRARIES})
 target_link_libraries(2.4test 2.4lib)
 
+add_executable(3.3test 3.3test.cpp)
+target_link_libraries(3.3test ${GTEST_LIBRARIES})
+target_link_libraries(3.3test 3.3lib)
