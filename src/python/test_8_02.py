@@ -14,6 +14,8 @@
 # Q: Do you want the shortest path? A: No, not necessarily.
 # Q: Can I assume the grid is at least 1x1? A: Sure
 import pytest
+import numpy as np
+import time
 # |||Implementation 1|||
 # In general, for path planning problems we might want to use BFS to find an optimal path. However
 # given the rules of this world all paths must be the same length (r-1) moves down and (c-1) moves
@@ -28,13 +30,18 @@ import pytest
 # size zero to O(r+c), these two things together then have a space complexity of O((r+c)^2)
 
 # Assume grid is a list of rows lists. An element is 1 when "off-limits".
-def find_path(loc, grid, list_of_moves=[]):
+def find_path(grid):
+    if (grid == None or len(grid) == 0 or len(grid[0])==0):
+        return None
+    return recur_find_path((0,0), grid)
+
+def recur_find_path(loc, grid, list_of_moves=[], visited=set()):
     print("\nThe current location is {} with moves series: {}".format(loc, list_of_moves))
     # Check if current location is invalid
-    if ((loc["r"] >= len(grid)) or (loc["c"] >= len(grid[0])) or grid[loc["r"]][loc["c"]]):
+    if ((loc[0] >= len(grid)) or (loc[1] >= len(grid[0])) or grid[loc[0]][loc[1]]):
         return None
     # Check if current location is the goal
-    if ((loc["r"] == len(grid)-1) and (loc["c"] >= len(grid[0])-1)):
+    if ((loc[0] == len(grid)-1) and (loc[1] >= len(grid[0])-1)):
         return list_of_moves
     # Prepare inputs needed for recursive calls
     # Make copies so we dont mutate the input
@@ -42,13 +49,19 @@ def find_path(loc, grid, list_of_moves=[]):
     right_moves.append('right')
     down_moves = list_of_moves.copy()
     down_moves.append('down')
+    right_loc = tuple((loc[0],loc[1]+1))
+    down_loc = tuple((loc[0]+1,loc[1]))
     # Try moving from current location
-    right_result = find_path({"r":loc["r"],"c":loc["c"]+1}, grid, right_moves)
-    if right_result:
-      return right_result
-    down_result = find_path({"r":loc["r"]+1,"c":loc["c"]}, grid, down_moves)
-    if down_result:
-      return down_result
+    if not right_loc in visited:
+        visited.update(right_loc)
+        right_result = recur_find_path(right_loc, grid, right_moves)
+        if right_result:
+          return right_result
+    if not down_loc in visited:
+        visited.update(down_loc)
+        down_result = recur_find_path(down_loc, grid, down_moves)
+        if down_result:
+          return down_result
     # If there is no path from right or left return None
     return None
 
@@ -58,7 +71,7 @@ def test_all_clear():
             [0, 0, 0, 0],
             [0, 0, 0, 0],
             [0, 0, 0, 0]]
-    path = find_path({"r":0,"c":0}, grid)
+    path = find_path(grid)
     print("\nA path to the goal is:{}!".format(path))
     assert path
 
@@ -67,7 +80,7 @@ def test_worst_case():
             [0, 0, 0, 0],
             [0, 1, 1, 1],
             [0, 0, 0, 0]]
-    path = find_path({"r":0,"c":0}, grid)
+    path = find_path(grid)
     print("\nA path to the goal is:{}!".format(path))
     assert path
 
@@ -76,7 +89,7 @@ def test_no_path():
             [0, 0, 1, 0],
             [0, 1, 0, 0],
             [1, 0, 0, 0]]
-    path = find_path({"r":0,"c":0}, grid)
+    path = find_path(grid)
     print("\nA path to the goal is:{}!".format(path))
     assert not path
 
@@ -85,16 +98,15 @@ def test_off_limit_start():
             [0, 0, 0, 0],
             [0, 0, 0, 0],
             [0, 0, 0, 0]]
-    path = find_path({"r":0,"c":0}, grid)
+    path = find_path(grid)
     print("\nA path to the goal is:{}!".format(path))
     assert not path
 
-def test_off_limit_end():
-    grid = [[0, 0, 0, 0],
+def test_off_limit_end(): grid = [[0, 0, 0, 0],
             [0, 0, 0, 0],
             [0, 0, 0, 0],
             [0, 0, 0, 1]]
-    path = find_path({"r":0,"c":0}, grid)
+    path = find_path(grid)
     print("\nA path to the goal is:{}!".format(path))
     assert not path
 
@@ -102,7 +114,7 @@ def test_wider_than_long():
     grid = [[0, 0, 0, 0],
             [0, 0, 0, 0],
             [0, 0, 0, 0]]
-    path = find_path({"r":0,"c":0}, grid)
+    path = find_path(grid)
     print("\nA path to the goal is:{}!".format(path))
     assert path
     
@@ -111,13 +123,13 @@ def test_longer_than_wide():
             [0, 0, 0],
             [0, 0, 0],
             [0, 0, 0]]
-    path = find_path({"r":0,"c":0}, grid)
+    path = find_path(grid)
     print("\nA path to the goal is:{}!".format(path))
     assert path
     
 def test_goal_is_start():
     grid = [[0]]
-    path = find_path({"r":0,"c":0}, grid, [])
+    path = find_path(grid)
     print("\nA path to the goal is:{}!".format(path))
     assert (path != None)
 
@@ -125,13 +137,41 @@ def test_3x3():
     grid = [[0, 0 , 0],
             [0, 0 , 0],
             [0, 0 , 0]]
-    path = find_path({"r":0,"c":0}, grid)
+    path = find_path(grid)
     print("\nA path to the goal is:{}!".format(path))
     assert path
 
 def test_2x2():
     grid = [[0, 0],
             [0, 0]]
-    path = find_path({"r":0,"c":0}, grid)
+    path = find_path(grid)
     print("\nA path to the goal is:{}!".format(path))
+    assert path
+
+def test_none_grid():
+    grid = None
+    path = find_path(grid)
+    print("\nA path to the goal is:{}!".format(path))
+    assert not path
+
+def test_no_rows_grid():
+    grid = [[]]
+    path = find_path(grid)
+    print("\nA path to the goal is:{}!".format(path))
+    assert not path
+
+def test_no_cols_grid():
+    grid = []
+    path = find_path(grid)
+    print("\nA path to the goal is:{}!".format(path))
+    assert not path
+
+def test_large_grid():
+    grid = np.zeros((400,400)).tolist()
+    start_time = time.time()
+    path = find_path(grid)
+    end_time = time.time()
+    delta_time = end_time - start_time
+    print("\nA path to the goal is:{}!".format(path))
+    print("Solution found in {} seconds.".format(delta_time))
     assert path
